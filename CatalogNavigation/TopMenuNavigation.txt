@@ -1,0 +1,29 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Test Cases ***
+Check if user is able to navigate to category landing page
+    User clicks on category    Perforated
+    System redirects user category landing page    Perforated
+
+Check if user is able to navigate to product listing page
+    User selects "Perforated" category and "Round Hole" subcategory
+    User navigates to Product listing page
+
+*** Keywords ***
+User clicks on category
+    [Arguments]    ${category}
+    Click Element    css=.dropdown-toggle
+    Click Element    link=Perforated
+
+System redirects user category landing page
+    [Arguments]    ${category}
+    Wait invisiability of preloader
+    Element Should Be Visible    css=#Container
+
+User selects "Perforated" category and "Round Hole" subcategory
+    Click Element    css=.dropdown-toggle
+    Click Element    link=Round Hole

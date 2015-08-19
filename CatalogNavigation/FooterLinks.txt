@@ -1,0 +1,35 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${myAccountLink}    css=ul.list-unstyled > li:nth-child(1) > a
+${myProfileLink}    css=div.row:nth-child(3) > div:nth-child(1) > a:nth-child(1)
+
+*** Test Cases ***
+Ability of guest user navigate to login/register page via footer
+    User click on 'My Account' link in footer
+    System displays Sign in button
+    System displays "Login/Register" link in site header
+
+Ability of registred user navigate to Account Dashboard via footer
+    User is logged in with credential    svenfisher888@gmail.com    Slifter1!
+    User click on 'My Account' link in footer
+    System redirects user to Account Dashboard
+
+*** Keywords ***
+System displays Sign in button
+    Wait Until Element Is Visible    css=#login    20
+    Page Should Contain Element    css=#login    There is no Sign in button
+
+System displays "Login/Register" link in site header
+    Page Should Contain Element    css=.btn-group.welcome>a    Login/Register    Login/Register link is not displayed
+
+User click on 'My Account' link in footer
+    Click Element    ${myAccountLink}
+
+System redirects user to Account Dashboard
+    Wait Until Element Is Visible    ${myProfileLink}    30
+    Page Should Contain Element    ${myProfileLink}    There is no My Profile link.

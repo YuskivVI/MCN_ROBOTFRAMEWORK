@@ -1,0 +1,93 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${New Credit Card button}    css=button.pull-right:nth-child(1)
+${Credit Card link}    css=ul.dropdown-menu:nth-child(2) > li:nth-child(5) > a:nth-child(1)
+${CC Name}        css=#nickname
+${CC Type}        css=#creditCardType
+${CC Number}      css=#creditCardNumber
+${CC Month}       css=#expirationMonth
+${CC Year}        css=#expirationYear
+${CC First Name}    css=#firstName
+${CC Last Name}    css=#lastName
+${CC Address}     css=#address1
+${CC City}        css=#city
+${CC State}       css=#state
+${CC Zip}         css=#postalCode
+${Create Button}    css=button[onclick="handleCreditCard();"]
+
+*** Test Cases ***
+Authenticated user can add new credit card
+    Navigate to Login Page
+    User is logged in with credential    svenfisher888@gmail.com    Slifter1!
+    User clicks on 'My Account' link
+    User clicks 'Credit Cards' link
+    User clicks on 'New Card' button
+    System displays 'Add/Edit Credit Card' modal window
+    User enters credit cards information field    Card    5555555555554444    Jan    2017    Sven    Svenny
+    ...    2700 Hospital Dr    Northport    AL - Alabama    354763360
+    User clicks 'Create' button
+    System displays confirmation message
+    System saves new credit card in database    Card
+
+Authenticated user deletes credit card from account
+    Navigate to Login Page
+    User clicks on 'My Account' link
+    User clicks 'Credit Cards' link
+    User clicks 'Delete' link next to the first added Credit Card
+    System displayed confirmation modal
+    User confirms deleting Credit Card
+
+*** Keywords ***
+User clicks 'Credit Cards' link
+    Click Element    ${Credit Card link}
+
+User clicks on 'New Card' button
+    Wait Until Element Is Visible    ${New Credit Card button}    20
+    Click Element    ${New Credit Card button}
+
+System displays 'Add/Edit Credit Card' modal window
+    Wait Until Element Is Visible    ${Create Button}
+    Page Should Contain Element    ${Create Button}
+
+User enters credit cards information field
+    [Arguments]    ${Name}    ${Number}    ${Month}    ${Year}    ${First}    ${Last}
+    ...    ${Address}    ${City}    ${State}    ${Zip}
+    Sleep    2
+    Input Text    ${CC Name}    ${Name}
+    Input Text    ${CC Number}    ${Number}
+    Select From List By Label    ${CC Month}    ${Month}
+    Select From List By Label    ${CC Year}    ${Year}
+    Input Text    ${CC First Name}    ${First}
+    Input Text    ${CC Last Name}    ${Last}
+    Input Text    ${CC Address}    ${Address}
+    Input Text    ${CC City}    ${City}
+    Select From List By Label    ${CC State}    ${State}
+    Input Text    ${CC Zip}    ${Zip}
+
+User clicks 'Create' button
+    Click Element    ${Create Button}
+
+System displays confirmation message
+    Sleep    5
+    Wait invisiability of preloader
+    Element Should Contain    css=#success    Credit Card has been successfully created.
+
+System saves new credit card in database
+    [Arguments]    ${Message}
+    Page Should Contain    ${Message}
+
+User clicks 'Delete' link next to the first added Credit Card
+    Wait invisiability of preloader
+    Click Element    css=.table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(8) > button:nth-child(1)
+
+System displayed confirmation modal
+    Sleep    3
+    Element Should Be Visible    css=.modal-lg
+
+User confirms deleting Credit Card
+    Click Element    css=.btn-ok

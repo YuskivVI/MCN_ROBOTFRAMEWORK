@@ -1,0 +1,51 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Next button}    css=button[onclick="handleGuestLogin();"]
+${Checkout As Guest Email Field}    css=#guestLogin
+
+*** Test Cases ***
+Ability guest user to complete checkout proccess
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects product and clicks on it
+    User clicks on Add to Cart button
+    User clicks on View Cart button
+    User clicks 'Proceed To Checkout' button
+    System redirects user to CheckOut login page
+    User enters in guest Email Address field    guestuser@gmail.com
+    User clicks 'Next' button on Checkout Login page
+    System redirects user to Checkout Shipping Address Page
+    User enters shipping address information    15 W Washington St    Chicago    IL - Illinois    606021603    Jonny    Big
+    ...    3333333333
+    User selects 'I require Delivery Appointment to be Scheduled' value "true"
+    User selects Limited Access value "true"
+    User clicks 'Continue' button
+    #User checks AVS validation
+    System redirects user to CheckOut Shipping Method page
+    User clicks 'Continue' button
+    System redirects user to 'Payment Method' page
+    User enters payment info    373953192351004    8888    Apr    2016    Jacky    Chan
+    Click Button    css=#creditCard-payment > div:nth-child(4) > div:nth-child(1) > button:nth-child(1)
+    System redirects user to 'Review Order' page
+    User clicks on 'Terms & Conditions' checkbox
+    User clicks 'Submit Order' button
+    System redirects user to 'Order Confirmation' page
+
+*** Keywords ***
+System redirects user to CheckOut login page
+    Sleep    5
+    Wait invisiability of preloader
+    Location Should Be    ${Home}/checkout/checkout-login.jsp
+
+User enters in guest Email Address field
+    [Arguments]    ${email}
+    Input Text    ${Checkout As Guest Email Field}    ${email}
+
+User clicks 'Next' button on Checkout Login page
+    Click Element    ${Next button}

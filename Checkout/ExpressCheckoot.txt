@@ -1,0 +1,46 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Login Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${CVV Field}      css=#cardVerificationNumber
+${Express Checkout Link}    css=a[onclick="return moveToExpressCheckout();"]
+${Express Checkout Review Page Link}    ${Home}/checkout/review-express.jsp
+
+*** Test Cases ***
+Ability of end user to navigate to Express Checkout page
+    Input Username    svenfisher888@gmail.com
+    Input Password    Slifter1!
+    Click on the 'Login' button
+    Wait invisiability of preloader
+    Wait Until Page Contains Element    ${MyAccountLink}    20
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects product and clicks on it
+    User clicks on Add to Cart button
+    User clicks on View Cart button
+    User clicks 'Express checkout' link
+    System redirects user to 'Express Checkout' page
+    User enters valid CVV    123
+    User clicks on 'Terms & Conditions' checkbox
+    User clicks 'Submit Order' button
+    System redirects user to 'Order Confirmation' page
+
+*** Keywords ***
+User clicks 'Express checkout' link
+    Sleep    2
+    Wait invisiability of preloader
+    Click Element    ${Express Checkout Link}
+
+System redirects user to 'Express Checkout' page
+    Sleep    2
+    Wait invisiability of preloader
+    Location Should Be    ${Express Checkout Review Page Link}
+
+User enters valid CVV
+    [Arguments]    ${CVV}
+    Sleep    3
+    Input Text    ${CVV Field}    ${CVV}

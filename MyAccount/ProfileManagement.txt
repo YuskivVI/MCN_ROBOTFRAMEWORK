@@ -1,0 +1,80 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Login Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Profile link}    css=ul.dropdown-menu:nth-child(2) > li:nth-child(1) > a:nth-child(1)
+${First name field}    css=#firstName
+${Last name field}    css=#lastName
+${Email field}    css=#email
+${Confirm Email field}    css=#confirmEmail
+${Password field}    css=#password
+${Confirm Password field}    css=#confirmPassword
+${Security Question field}    css=select
+${Security Answer field}    css=#securityAnswer
+${Phone field}    css=#phoneNumber
+${Update Button}    css=.btn-primary.pull-right
+
+*** Test Cases ***
+Authenticated user edits profile personal details
+    User is logged in with credential    svenfisher888@gmail.com    Slifter1!
+    User clicks on 'My Account' link
+    User clicks 'Profile' link
+    User is at 'Profile' page
+    User enters information    Evan    Keine    evankein@gmail.com    evankein@gmail.com    Slifter1!    Slifter1!
+    ...    What is your favorite food?    Pizza    2315468463
+    User clicks 'Update' button
+    System displays message    Your profile has been successfully updated.
+    User log out from the system
+    Navigate to Login Page
+    User is logged in with credential    evankein@gmail.com    Slifter1!
+    User clicks 'Profile' link
+    User updates profile information back    Sven    Fisher    svenfisher888@gmail.com    svenfisher888@gmail.com    Slifter1!    Slifter1!
+    ...    Which is your favorite color?    Green    2315468463
+    User clicks 'Update' button
+    System displays message    Your profile has been successfully updated.
+
+*** Keywords ***
+User clicks 'Profile' link
+    Click Element    ${Profile link}
+
+User is at 'Profile' page
+    Wait invisiability of preloader
+    Element Should Be Visible    ${First name field}
+
+User enters information
+    [Arguments]    ${first name}    ${last name}    ${email}    ${confirm email}    ${password}    ${confirm password}
+    ...    ${security question}    ${answer}    ${phone}
+    Input Text    ${First name field}    ${first name}
+    Input Text    ${Last name field}    ${last name}
+    Input Text    ${Email field}    ${email}
+    Input Text    ${Confirm Email field}    ${confirm email}
+    Input Text    ${Password field}    ${password}
+    Input Text    ${Confirm Password field}    ${confirm password}
+    Select From List By Label    ${Security Question field}    ${security question}
+    Input Text    ${Security Answer field}    ${answer}
+    Input Text    ${Phone field}    ${phone}
+
+User clicks 'Update' button
+    Click Element    ${Update Button}
+
+System displays message
+    [Arguments]    ${message}
+    Sleep    5
+    Wait invisiability of preloader
+    Element Should Contain    css=#success    Your profile has been successfully updated.
+
+User updates profile information back
+    [Arguments]    ${first name}    ${last name}    ${email}    ${confirm email}    ${password}    ${confirm password}
+    ...    ${security question}    ${answer}    ${phone}
+    Input Text    ${First name field}    ${first name}
+    Input Text    ${Last name field}    ${last name}
+    Input Text    ${Email field}    ${email}
+    Input Text    ${Confirm Email field}    ${confirm email}
+    Input Text    ${Password field}    ${password}
+    Input Text    ${Confirm Password field}    ${confirm password}
+    Select From List By Label    ${Security Question field}    ${security question}
+    Input Text    ${Security Answer field}    ${answer}
+    Input Text    ${Phone field}    ${phone}

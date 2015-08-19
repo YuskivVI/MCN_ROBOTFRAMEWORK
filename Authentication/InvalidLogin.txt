@@ -1,0 +1,45 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Login Page
+Test Template     Login With Invalid Credentials Should Fail
+Resource          ../utils/AbstractContainer.txt
+
+*** Test Cases ***    User Name              Password     Message
+Invalid Username      invalid                Slifter1!    Incorrect email address/password.
+
+Invalid Password      jonnydepp@gmail.com    invalid      Incorrect email address/password.
+
+Invalid Username And Password
+                      invalid                whatever     Incorrect email address/password.
+
+Empty Username        ${EMPTY}               Slifter1!    Please enter email address/password.
+
+Empty Password        jonnydepp@gmail.com    ${EMPTY}     Please enter password.
+
+Empty Username And Password
+                      ${EMPTY}               ${EMPTY}     Please enter email address/password.\n Please enter password.
+
+*** Keywords ***
+Login With Invalid Credentials Should Fail
+    [Arguments]    ${username}    ${password}    ${errorMsq}
+    Input Username    ${username}
+    Input Password    ${password}
+    Click on the 'Login' button
+    Error Message Should be displayed    ${errorMsq}
+
+Input Username
+    [Arguments]    ${username}
+    Input Text    css=#login    ${username}
+
+Input Password
+    [Arguments]    ${password}
+    Input Text    css=#password    ${password}
+
+Click on the 'Login' button
+    Click Button    css=div.col-md-12:nth-child(2) > button:nth-child(3)
+
+Error Message Should be displayed
+    [Arguments]    ${errorMsq}
+    Wait Until Element Is Visible    css=#error-login
+    Element Should Contain    css=#error-login    ${errorMsq}

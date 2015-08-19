@@ -1,0 +1,28 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Resource          ../utils/AbstractContainer.txt
+
+*** Test Cases ***
+Ability of end user to add product to shopping cart from Product Details Page
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects product and clicks on it
+    User located on product detail page
+    User clicks on Add to Cart button
+    System displays add to cart confirmation modal
+    User clicks on View Cart button
+    System adds of products to Shopping Cart
+
+*** Keywords ***
+User located on product detail page
+    Wait invisiability of preloader
+    Page Should Contain Element    css=button.btn-lg:nth-child(1)
+
+System displays add to cart confirmation modal
+    Wait invisiability of preloader
+    Page Should Not Contain Element    css=#productsAdded
+
+System adds of products to Shopping Cart
+    Element Should Contain    css=.table    0.5" Square Hole on 0.6875" Straight Row_48" x 120"

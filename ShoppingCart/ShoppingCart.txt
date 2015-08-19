@@ -1,0 +1,74 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Shopping Cart URL}    ${Home}/checkout/cart.jsp
+${Qty field}      css=.table>tbody>tr>td>input
+${Update link}    css=a.hidden-print:nth-child(3)
+${Item TrumbnailImg}    css=.media-object
+${Product Name}    css=.media-body > a:nth-child(1)
+${SKU}            css=p.text
+${Subtotal}       css=td.text-right:nth-child(3)
+${Estimated Total}    css=tr.noborder:nth-child(5) > td:nth-child(2)
+
+*** Test Cases ***
+Ability of end user to update quantity of the item in shopping cart
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects product and clicks on it
+    User clicks on Add to Cart button
+    User clicks on View Cart button
+    System redirects user to Shopping Cart page
+    User enters in quantity box    5
+    user clicks 'Update' button
+    system displays confirmation message    Your cart has been successfully updated
+    System updated quantity to    5
+
+Ability of end user view shopping cart details
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects product and clicks on it
+    User clicks on Add to Cart button
+    User clicks on View Cart button
+    System redirects user to Shopping Cart page
+    System displays following product details:Product Thumbnail image, Product Display Name, ItemSKU
+    System displays following order summary: Subtotal, Estimated Total
+
+*** Keywords ***
+System redirects user to Shopping Cart page
+    Sleep    2
+    Wait invisiability of preloader
+    Location Should Be    ${Shopping Cart URL}
+
+User enters in quantity box
+    [Arguments]    ${quantity}
+    Input Text    ${Qty field}    ${quantity}
+
+User clicks 'Update' button
+    Click Element    ${Update link}
+
+System displays confirmation message
+    [Arguments]    ${message}
+    Sleep    3
+    Wait invisiability of preloader
+    Element Should Contain    css=#success    ${message}
+
+System updated quantity to
+    [Arguments]    ${quantity}
+    ${valueQty} =    Get Value    ${Qty field}
+    Should Be Equal    ${valueQty}    ${quantity}
+
+System displays following product details:Product Thumbnail image, Product Display Name, ItemSKU
+    Sleep    2
+    Page Should Contain Element    ${Item TrumbnailImg}    There is no Product image
+    Page Should Contain Element    ${Product Name}    There is no Product name
+    Page Should Contain Element    ${SKU}    There is no product SKU
+
+System displays following order summary: Subtotal, Estimated Total
+    Page Should Contain Element    ${Subtotal}
+    Page Should Contain Element    ${Estimated Total}

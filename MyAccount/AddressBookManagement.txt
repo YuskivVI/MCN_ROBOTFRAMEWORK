@@ -1,0 +1,101 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Address Book Link}    css=ul.dropdown-menu:nth-child(2) > li:nth-child(3) > a:nth-child(1)
+${Add new Address Link}    css=h4:nth-child(1) > small:nth-child(1) > a:nth-child(1)
+${Save button}    css=.modal-footer > button:nth-child(2)
+
+*** Test Cases ***
+Authenticated user can add new address to address book
+    Navigate to Login Page
+    User is logged in with credential    svenfisher888@gmail.com    Slifter1!
+    User clicks on 'My Account' link
+    User clicks at 'Address Book' link
+    User navigates to 'Address Book' page
+    User clicks 'Add new Address' button
+    System displays 'Add/Edit Address' modal window
+    User enters address information    Adam    2700 Hospital Dr    Northport    AL - Alabama    354763360
+    User selects Limited access Address Location
+    User selects require Delivery Appointment to Be Scheduled
+    User clicks 'Save' button
+    System displays confirmation message    The address is successfully created.
+    System adds address to user address book    2700 Hospital
+
+Authenticated user can edit Address information
+    User clicks on 'My Account' link
+    User clicks at 'Address Book' link
+    User navigates to 'Address Book' page
+    User clicks Edit button next to new added address
+    System displays 'Add/Edit Address' modal window
+    User enters address information    Andrea    305 Intergraph Way    Madison    AL - Alabama    35758
+    User clicks 'Save' button
+    User checks AVS validation
+    System displays confirmation message    The address is successfully updated.
+    System adds address to user address book    305 Intergraph Way
+
+Authenticated user deletes address from address book
+    User clicks on 'My Account' link
+    User clicks at 'Address Book' link
+    User navigates to 'Address Book' page
+    User clicks delete button next to new added address
+    User confirms deleting of address
+    System displays confirmation message    The address is successfully deleted.
+
+*** Keywords ***
+User clicks at 'Address Book' link
+    Click Element    ${Address Book Link}
+
+User navigates to 'Address Book' page
+    Wait Until Page Contains Element    css=#addressType
+    Page Should Contain Element    css=#addressType
+
+User clicks 'Add new Address' button
+    Click Element    ${Add new Address Link}
+
+System displays 'Add/Edit Address' modal window
+    Wait Until Page Contains Element    css=#updateAddressForm
+    Page Should Contain Element    css=#updateAddressForm
+
+User enters address information
+    [Arguments]    ${addressName}    ${address}    ${city}    ${state}    ${zip}
+    Sleep    2
+    Input Text    css=#displayName    ${addressName}
+    Input Text    css=#address1    ${address}
+    Input Text    css=#city    ${city}
+    Select From List By Label    css=#state    ${state}
+    Input Text    css=#postalCode    ${zip}
+
+User selects Limited access Address Location
+    Click Element    css=div.form-group:nth-child(17) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1)
+
+User selects require Delivery Appointment to Be Scheduled
+    Click Element    css=div.form-group:nth-child(18) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1)
+
+User clicks 'Save' button
+    Click Element    ${Save button}
+
+System displays confirmation message
+    [Arguments]    ${message}
+    Sleep    3
+    Element Should Contain    css=#success    ${message}
+
+System adds address to user address book
+    [Arguments]    ${address}
+    Sleep    2
+    Page Should Contain    ${address}
+
+User clicks delete button next to new added address
+    Click Element    css=.table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(6) > button:nth-child(1)
+
+System displays confirmation modal
+
+User confirms deleting of address
+    Sleep    3
+    Click Element    css=.btn-ok
+
+User clicks Edit button next to new added address
+    Click Element    css=.table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(5) > button:nth-child(1)

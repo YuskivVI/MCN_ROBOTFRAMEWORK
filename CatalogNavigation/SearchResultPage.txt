@@ -1,0 +1,27 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Test Cases ***
+Ability of end user to view seacrh result page
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    System displays search result page with products
+
+Ability of end user to vew zero search result page
+    User enters in search field    asdfghjkl
+    User clicks 'Search' button
+    System displays search result page without products
+
+*** Keywords ***
+System displays search result page with products
+    Wait invisiability of preloader
+    Wait Until Element Is Visible    css=div.col-lg-12:nth-child(1)    30
+    Element Should Be Visible    css=div.col-lg-12:nth-child(1)    There is no products on Search Result page.
+
+System displays search result page without products
+    Sleep    3
+    Wait invisiability of preloader
+    Element Should Not Be Visible    css=div.col-lg-12:nth-child(1)    There are products on Search Result page.

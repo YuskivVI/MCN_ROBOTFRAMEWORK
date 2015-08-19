@@ -1,0 +1,50 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${ > button }     css=i.fa.fa-angle-right
+${ < button }     css=i.fa.fa-angle-left
+${ Active button }    css=.col-lg-7>ul>li.active>a
+
+*** Test Cases ***
+Ability ofcend user to user pagination via ">" arrow
+    User enters in search field    Round Hole
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User clicks on '>' button
+    System redirect user "2" page of search result page
+
+Ability ofcend user to user pagination via "<" arrow
+    User enters in search field    Round Hole
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User clicks on "2" button
+    System redirect user "2" page of search result page
+    User clicks on '<' button
+    System redirect user "1" page of search result page
+
+*** Keywords ***
+User clicks on '>' button
+    Sleep    3
+    Click Element    ${ > button }
+
+User clicks on '<' button
+    Sleep    3
+    Click Element    ${ < button }
+
+User clicks on "2" button
+    Sleep    3
+    Click Element    css=.col-lg-7 > ul:nth-child(1) > li:nth-child(4) > a:nth-child(1)
+
+System redirect user "2" page of search result page
+    Sleep    3
+    Wait invisiability of preloader
+    Element Text Should Be    ${ Active button }    2
+
+System redirect user "1" page of search result page
+    Sleep    3
+    Wait invisiability of preloader
+    Element Text Should Be    ${ Active button }    1

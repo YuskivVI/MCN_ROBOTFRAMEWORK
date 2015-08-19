@@ -1,0 +1,75 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Compare button}    css=a.btn-primary
+
+*** Test Cases ***
+Ability of end user to add to comparison only one product
+    User enters in search field    Square Hole
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects checkbox for 1 products
+    User clicks on 'Compare' button
+    System displays error message    Please select at least 2 items to compare and try again
+
+Ability of end user to add 2 products to comparison list on PLP
+    User enters in search field    Square Hole
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects checkbox for 2 products
+    User clicks on 'Compare' button
+    System redirects user to Compare page
+
+Ability of end user to add 4 products to comparison list on PLP
+    User enters in search field    Square Hole
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects checkbox for 4 products
+    User clicks on 'Compare' button
+    System redirects user to Compare page
+
+Ability of end user to add 5 products to comparison list on PLP
+    User enters in search field    Square Hole
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User selects checkbox for 5 products
+    System displays error message    You've already reached max size of comparison list
+
+*** Keywords ***
+User selects checkbox for 1 products
+    Wait invisiability of preloader
+    Select Checkbox    css= div:nth-child(1) > div:nth-child(1) > div > div > label > input
+
+User selects checkbox for 2 products
+    Wait invisiability of preloader
+    Select Checkbox    css=div:nth-child(1) > div:nth-child(2) > div > div > label > input
+
+User selects checkbox for 4 products
+    Wait invisiability of preloader
+    Select Checkbox    css=div:nth-child(1) > div:nth-child(3) > div > div > label > input
+    Sleep    3
+    Wait invisiability of preloader
+    Select Checkbox    css=div:nth-child(2) > div:nth-child(1) > div> div>label>input
+
+User selects checkbox for 5 products
+    Wait invisiability of preloader
+    Select Checkbox    css=div:nth-child(2) > div:nth-child(2) > div> div> label>input
+
+User clicks on 'Compare' button
+    Wait invisiability of preloader
+    Click Element    ${Compare button}
+
+System redirects user to Compare page
+    Sleep    3
+    Wait invisiability of preloader
+    Page Should Contain Element    css=#compare-container    There is no compare table on Compare page.
+
+System displays error message
+    [Arguments]    ${error message}
+    Sleep    3
+    Wait invisiability of preloader
+    Element Should Contain    css=#error    ${error message}

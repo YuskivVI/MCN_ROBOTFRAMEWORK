@@ -1,0 +1,173 @@
+*** Settings ***
+Library           Selenium2Library
+Library           ../../../../../Python27/libs/MyLibrary.py
+
+*** Variables ***
+${Home}           http://stage.mcnichols.com
+${BROWSER}        Firefox
+${DELAY}          0
+${LOGIN URL}      ${Home}/account/login-page.jsp
+${Register Url}    ${Home}/account/create-an-account.jsp
+${orderConfirmationUrl}    ${Home}/checkout/confirmation.jsp
+${AVSValidation}    css=div.modal-footer:nth-child(2) > button:nth-child(2)
+${Shopping Cart Link}    css=a.button-header:nth-child(4) > span:nth-child(2)
+${SearchBtn}      css=#globalSearchForm>span>button
+${ProductTitle}    css=.product-title
+${AddToCartBtn}    css=button.btn-lg:nth-child(1)
+${ViewCardBtn}    css=button[onclick="linkToUrl('/checkout/cart.jsp');"]
+${My Account link}    css=div.button-header > span:nth-child(2)
+${ProceedToCheckoutBtn}    css=button[onclick="handleMoveToPurchase();"]
+${shippingAddressForm}    css=#shippingAddressForm
+${continueBtn}    css=button.pull-right:nth-child(1)
+${creditCardRadioBox}    css=input[value="creditCard-payment"]
+${submitOrderBtn}    css=button[onclick="handleSubmitOrder();"]
+${terms&Conditions}    css=tr.noborder:nth-child(5) > td:nth-child(1) > div:nth-child(1) > label
+
+*** Keywords ***
+Open Browser To Home Page
+    Open Browser    ${Home}    ${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed    ${DELAY}
+
+Navigate to Home Page
+    Go to    ${Home}
+
+Navigate to Login Page
+    Go to    ${LOGIN URl}
+
+Navigate to Create Account Page
+    Navigate to Login Page
+    Wait Until Page Contains Element    css=#register-create-noorg    20    There is no such element
+    Click Link    css=#register-create-noorg
+    Wait Until Page Contains Element    css=#firstName    20    There is no such element
+
+Input Username
+    [Arguments]    ${username}
+    Input Text    css=#login    ${username}
+
+Input Password
+    [Arguments]    ${password}
+    Input Text    css=#password    ${password}
+
+Click on the 'Login' button
+    Click Element    css=div.col-md-12:nth-child(2) > button:nth-child(3)
+
+User checks AVS validation
+    Sleep    3
+    Wait Until Element Is Visible    ${AVSValidation}
+    Click Button    ${AVSValidation}
+
+User detetes all products from Card
+    Click Element    ${Shopping Cart Link}
+    Wait Until Element Is Visible    css=.checkbox-toggle-cart > label:nth-child(1) > input:nth-child(1)
+    Click Element    css=.checkbox-toggle-cart > label:nth-child(1) > input:nth-child(1)
+    Sleep    3
+    Click Element    css=a[onclick="event.stopPropagation();return handleRemoveItemsFromOrder(true);"]
+    Wait Until Element Is Not Visible    css=#status-loader    20
+
+User log out from the system
+    Click Element    css=div.button-header > span:nth-child(2)
+    Click Element    css=li:nth-child(11) > a:nth-child(1)
+    Wait invisiability of preloader
+
+Wait invisiability of preloader
+    Wait Until Element Is Not Visible    css=#status-loader    30
+
+User enters in search field
+    [Arguments]    ${searchKey}
+    Input Text    css=#headerSearchQuestion    ${searchKey}
+
+User clicks 'Search' button
+    Click Button    ${SearchBtn}
+    Sleep    2
+
+User selects product and clicks on it
+    Click Element    ${ProductTitle}
+
+User clicks on Add to Cart button
+    Wait Until Element Is Visible    ${AddToCartBtn}    10    There is no Add to Cart button
+    Click Element    ${AddToCartBtn}
+
+User clicks on View Cart button
+    Wait Until Element Is Visible    ${ViewCardBtn}    20
+    Click Button    ${ViewCardBtn}
+
+User navigates to Product listing page
+    Wait Until Element Is Visible    css=.col-sm-9    20    Product listing page is not displayed.
+
+User is logged in with credential
+    [Arguments]    ${username}    ${password}
+    Navigate to Login Page
+    Input Username    ${username}
+    Input Password    ${password}
+    Click on the 'Login' button
+    Wait Until Page Contains Element    css=div.button-header > a:nth-child(1)
+
+User clicks on 'My Account' link
+    Click Element    ${My Account link}
+
+User clicks 'Proceed To Checkout' button
+    Wait Until Element Is Visible    ${ProceedToCheckoutBtn}    20
+    Click Button    ${ProceedToCheckoutBtn}
+
+System redirects user to Checkout Shipping Address Page
+    Wait Until Element Is Visible    ${shippingAddressForm}    20
+
+User enters shipping address information
+    [Arguments]    ${address}    ${city}    ${state}    ${zip}    ${firstName}    ${lastName}
+    ...    ${phone}
+    Input Text    css=#address1    ${address}
+    Input Text    css=#city    ${city}
+    Input Text    css=#postalCode    ${zip}
+    Select From List By Label    css=#state    ${state}
+    Input Text    css=#phoneNumber    ${phone}
+    Input Text    css=#firstName    ${firstName}
+    Input Text    css=#lastName    ${lastName}
+
+User selects Limited Access value "true"
+    Click Element    css=div.form-group:nth-child(9)>div:nth-child(2)>label:nth-child(1)>input:nth-child(1)
+
+User selects 'I require Delivery Appointment to be Scheduled' value "true"
+    Click Element    css=#radioPreNotificationTrue
+
+User clicks 'Continue' button
+    Click Button    ${continueBtn}
+
+System redirects user to CheckOut Shipping Method page
+    Wait Until Element Is Visible    css=#shippingMethodContent    20    Shipping Method form is not displayed.
+
+System redirects user to 'Payment Method' page
+    Sleep    5
+    Wait invisiability of preloader
+    Location Should Be    ${Home}/checkout/payment.jsp
+
+User selects 'Credit Cart' radioBox
+    Click Element    ${creditCardRadioBox}
+
+User selects from dropdown list
+    [Arguments]    ${value}
+    Select From List By Label    css=#nickname    ${value}
+
+User enters payment info
+    [Arguments]    ${CCNumber}    ${CCV}    ${Month}    ${Years}    ${fistName}    ${lastName}
+    Input Text    css=input[name="/vsg/commerce/order/purchase/CreditCardPaymentFormHandler.editValue.creditCardNumber"]    ${CCNumber}
+    Input Text    css=#cardVerificationNumber    ${CCV}
+    Select From List By Label    css=#expirationMonth    ${Month}
+    Select From List By Label    css=#expirationYear    ${Years}
+    Input Text    css=#firstName    ${fistName}
+    Input Text    css=#lastName    ${lastName}
+    Click Element    css=#sameAsShipping
+    Sleep    3
+
+System redirects user to 'Review Order' page
+    Wait Until Element Is Visible    ${submitOrderBtn}    20
+
+User clicks on 'Terms & Conditions' checkbox
+    Click Element    ${terms&Conditions}
+
+User clicks 'Submit Order' button
+    Click Element    ${submitOrderBtn}
+
+System redirects user to 'Order Confirmation' page
+    Wait Until Element Is Not Visible    css=#status-loader    20
+    Location Should Be    ${orderConfirmationUrl}

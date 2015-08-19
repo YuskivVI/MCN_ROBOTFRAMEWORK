@@ -1,0 +1,20 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close Browser
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Clear All Button}    css=.btn.btn-default.btn-sm
+
+*** Test Cases ***
+
+*** Keywords ***
+User selects "1" available facet values
+
+System filters out result list according to selected facet value
+
+User clicks on 'Clear All' button
+    Click Element    ${Clear All Button}
+
+System removes selected facets section

@@ -1,0 +1,33 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Login Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Test Cases ***
+Ability of end user to log out from the site
+    Input Username    svenfisher888@gmail.com
+    Input Password    Slifter1!
+    Click on the 'Login' button
+    Wait Until Page Contains Element    css=div.button-header > a:nth-child(1)
+    Page Should Contain    Welcome, Sven
+    Element Should Contain    css=div.button-header > a:nth-child(1)    My Account
+    User log out from the system
+    System displays Sign in button and Continue shopping button
+    System displays "Login/Register" link in site header
+
+*** Keywords ***
+User clicks on 'My Account' link
+    Click Element    css=div.button-header > span:nth-child(2)
+
+User clicks 'Log out' link
+    Click Element    css=li:nth-child(11) > a:nth-child(1)
+    Wait invisiability of preloader
+
+System displays Sign in button and Continue shopping button
+    Wait Until Element Is Visible    css=a.btn-ar:nth-child(1)    30
+    Page Should Contain Element    css=a.btn-ar:nth-child(1)    There is no Sign in button
+    Page Should Contain Element    css=a.btn-ar:nth-child(2)    There is no 'Login/Register' link
+
+System displays "Login/Register" link in site header
+    Element Should Contain    css=.btn-group.welcome>a    Login/Register    Login/Register link is not displayed

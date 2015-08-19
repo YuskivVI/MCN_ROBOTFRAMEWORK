@@ -1,0 +1,25 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Test Setup        Navigate to Home Page
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${Site logo}      css=.col-md-5 > a:nth-child(1) > img:nth-child(1)
+
+*** Test Cases ***
+Ability of end user to navigate to home page via site logo
+    User enters in search field    0.5 Square Hole on 0.6875 Straight Row_48 x 120
+    User clicks 'Search' button
+    User navigates to Product listing page
+    User clicks on 'Site Logo' banner
+    System redirect user to 'Home' page
+
+*** Keywords ***
+User clicks on 'Site Logo' banner
+    Click Element    ${Site logo}
+
+System redirect user to 'Home' page
+    Sleep    3
+    Wait invisiability of preloader
+    Location Should Be    ${Home}/
