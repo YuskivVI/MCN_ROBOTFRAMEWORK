@@ -5,6 +5,7 @@ Library           ../../../../../Python27/libs/MyLibrary.py
 *** Variables ***
 ${Home}           http://stage.mcnichols.com
 ${BROWSER}        Firefox
+${CreateAccountEmail}    kenny45w@gmail.com
 ${DELAY}          0
 ${LOGIN URL}      ${Home}/account/login-page.jsp
 ${Register Url}    ${Home}/account/create-an-account.jsp

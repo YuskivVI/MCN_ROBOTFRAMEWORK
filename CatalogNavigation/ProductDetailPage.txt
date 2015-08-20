@@ -1,6 +1,7 @@
 *** Settings ***
 Suite Setup       Open Browser To Home Page
 Suite Teardown    Close All Browsers
+Force Tags        Smoke
 Resource          ../utils/AbstractContainer.txt
 
 *** Test Cases ***

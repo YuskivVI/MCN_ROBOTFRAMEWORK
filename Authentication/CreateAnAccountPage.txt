@@ -1,13 +1,14 @@
 *** Settings ***
 Suite Setup       Open Browser To Home Page
 Suite Teardown    Close All Browsers
+Force Tags        Smoke
 Resource          ../utils/AbstractContainer.txt
 
 *** Test Cases ***
 Verify that user can create new account without organization number
     Navigate to Create Account Page
     System redirect user to create account page
-    User enters credential    Larry    Mouse    larry35ken@gmail.com    Slifter1!    Green
+    User enters credential    Larry    Mouse    ${CreateAccountEmail}    Slifter1!    Green
     User enters address    MyTeam    2700 Hospital Dr    Northport    AL - Alabama    354763360    5874624868
     User clicks on the 'Terms of Use' and 'Privacy Policy' checkbox
     User click 'Submit' button

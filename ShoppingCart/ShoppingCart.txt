@@ -2,6 +2,7 @@
 Suite Setup       Open Browser To Home Page
 Suite Teardown    Close All Browsers
 Test Setup
+Force Tags        Smoke
 Resource          ../utils/AbstractContainer.txt
 
 *** Variables ***

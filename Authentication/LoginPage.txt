@@ -6,7 +6,7 @@ Documentation     A test suite with a single test for valid login.
 Suite Setup       Open Browser To Home Page
 Suite Teardown    Close All Browsers
 Test Setup        Navigate to Login Page
-Force Tags
+Force Tags        Smoke
 Resource          ../utils/AbstractContainer.txt
 
 *** Variables ***
