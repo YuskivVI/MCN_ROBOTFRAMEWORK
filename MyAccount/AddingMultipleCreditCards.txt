@@ -1,0 +1,86 @@
+*** Settings ***
+Suite Setup       Open Browser To Home Page
+Suite Teardown    Close All Browsers
+Resource          ../utils/AbstractContainer.txt
+
+*** Variables ***
+${New Credit Card button}    css=button.pull-right:nth-child(1)
+${Credit Card link}    css=ul.dropdown-menu:nth-child(2) > li:nth-child(5) > a:nth-child(1)
+${CC Name}        css=#nickname
+${CC Type}        css=#creditCardType
+${CC Number}      css=#creditCardNumber
+${CC Month}       css=#expirationMonth
+${CC Year}        css=#expirationYear
+${CC First Name}    css=#firstName
+${CC Last Name}    css=#lastName
+${CC Address}     css=#address1
+${CC City}        css=#city
+${CC State}       css=#state
+${CC Zip}         css=#postalCode
+${Create Button}    css=button[onclick="handleCreditCard();"]
+
+*** Test Cases ***
+User is logged in and navigates to Credit Card page
+    Navigate to Login Page
+    Sleep    3
+    Wait invisiability of preloader
+    User is logged in with credential    svenfisher888@gmail.com    Slifter1!
+    User clicks on 'My Account' link
+    User clicks at 'Credit Card' link
+
+User adds 10 credit cards to Credit Card page
+    [Template]    User adds 10 credit cards
+    Card 2    4111111111111111    Apr    2019    Sven    Svenny    2700 Hospital Dr
+    ...    Northport    AL - Alabama    354763360
+    Card 3    5555555555554444    Apr    2019    Sven    Svenny    2700 Hospital Dr
+    ...    Northport    AL - Alabama    354763360
+    Card 4    6011000990099818    Apr    2019    Sven    Svenny    2700 Hospital Dr
+    ...    Northport    AL - Alabama    354763360
+    Card 6    378282246310005    Apr    2019    Sven    Svenny    2700 Hospital Dr
+    ...    Northport    AL - Alabama    354763360
+
+*** Keywords ***
+User clicks at 'Credit Card' link
+    Click Element    ${Credit Card link}
+
+User clicks on 'New Card' button
+    Wait Until Element Is Visible    ${New Credit Card button}    20
+    Click Element    ${New Credit Card button}
+
+System displays 'Add/Edit Credit Card' modal window
+    Wait Until Element Is Visible    ${Create Button}
+    Page Should Contain Element    ${Create Button}
+
+User enters credit cards information field
+    [Arguments]    ${Name}    ${Number}    ${Month}    ${Year}    ${First}    ${Last}
+    ...    ${Address}    ${City}    ${State}    ${Zip}
+    Sleep    2
+    Input Text    ${CC Name}    ${Name}
+    Input Text    ${CC Number}    ${Number}
+    Select From List By Label    ${CC Month}    ${Month}
+    Select From List By Label    ${CC Year}    ${Year}
+    Input Text    ${CC First Name}    ${First}
+    Input Text    ${CC Last Name}    ${Last}
+    Input Text    ${CC Address}    ${Address}
+    Input Text    ${CC City}    ${City}
+    Select From List By Label    ${CC State}    ${State}
+    Input Text    ${CC Zip}    ${Zip}
+
+User clicks 'Create' button
+    Click Element    ${Create Button}
+
+System displays confirmation message
+    Sleep    5
+    Wait invisiability of preloader
+    Element Should Contain    css=#success    Credit Card has been successfully created.
+
+User adds 10 credit cards
+    [Arguments]    ${Name}    ${Number}    ${Month}    ${Year}    ${First}    ${Last}
+    ...    ${Address}    ${City}    ${State}    ${Zip}
+    User clicks on 'New Card' button
+    System displays 'Add/Edit Credit Card' modal window
+    User enters credit cards information field    ${Name}    ${Number}    ${Month}    ${Year}    ${First}    ${Last}
+    ...    ${Address}    ${City}    ${State}    ${Zip}
+    User clicks 'Create' button
+    Click Element    ${Create Button}
+    System displays confirmation message

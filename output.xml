@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20150811 07:45:29.342" generator="Robot 2.8.5 (Python 2.7.3 on win32)">
-<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\LoginPage.txt" id="s1" name="LoginPage">
+<robot generated="20150819 09:12:53.697" generator="Robot 2.8.5 (Python 2.7.3 on win32)">
+<suite id="s1" name="Authentication &amp; CatalogNavigation">
+<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\Authentication" id="s1-s1" name="Authentication">
+<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\Authentication\CreateAnAccountPage.txt" id="s1-s1-s1" name="CreateAnAccountPage">
 <kw type="setup" name="AbstractContainer.Open Browser To Home Page">
 <doc></doc>
 <arguments>
@@ -11,10 +13,4 @@
 <arg>${Home}</arg>
 <arg>${BROWSER}</arg>
 </arguments>
-<msg timestamp="20150811 07:45:29.581" level="INFO">Opening browser 'chrome' to base url 'http://stage.mcnichols.com'</msg>
-<status status="PASS" endtime="20150811 07:45:41.027" starttime="20150811 07:45:29.581"></status>
-</kw>
-<kw type="kw" name="Selenium2Library.Maximize Browser Window">
-<doc>Maximizes current browser window.</doc>
-<arguments>
-</arguments>
+<msg timestamp="20150819 09:12:54.001" level="INFO">Opening browser 'Firefox' to base url 'http://stage.mcnichols.com'</msg>

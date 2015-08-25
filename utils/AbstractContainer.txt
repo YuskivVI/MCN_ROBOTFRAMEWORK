@@ -1,10 +1,10 @@
 *** Settings ***
 Library           Selenium2Library
-Library           ../../../../../Python27/libs/MyLibrary.py
+Library           ../Libraries/RandomName.py
 
 *** Variables ***
 ${Home}           http://stage.mcnichols.com
-${BROWSER}        Firefox
+${BROWSER}        firefox
 ${CreateAccountEmail}    kenny45w@gmail.com
 ${DELAY}          0
 ${LOGIN URL}      ${Home}/account/login-page.jsp

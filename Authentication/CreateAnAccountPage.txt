@@ -8,11 +8,10 @@ Resource          ../utils/AbstractContainer.txt
 Verify that user can create new account without organization number
     Navigate to Create Account Page
     System redirect user to create account page
-    User enters credential    Larry    Mouse    ${CreateAccountEmail}    Slifter1!    Green
-    User enters address    MyTeam    2700 Hospital Dr    Northport    AL - Alabama    354763360    5874624868
+    User enters credential    Larry    Mouse    Slifter1!    Green
+    User enters address    2700 Hospital Dr    Northport    AL - Alabama    354763360    5874624868
     User clicks on the 'Terms of Use' and 'Privacy Policy' checkbox
     User click 'Submit' button
-    User clicks 'Not My Account' button
     Wait Until Element Is Visible    css=div.button-header > a:nth-child(1)    20
     Element Should Contain    css=div.button-header > a:nth-child(1)    My Account    User is not create new account
 
@@ -21,18 +20,20 @@ System redirect user to create account page
     Location Should Be    ${Register Url}
 
 User enters credential
-    [Arguments]    ${firstName}    ${lastName}    ${email}    ${password}    ${sAnswer}
+    [Arguments]    ${firstName}    ${lastName}    ${password}    ${sAnswer}
     Input Text    css=#firstName    ${firstName}
     Input Text    css=#lastName    ${lastName}
-    Input Text    css=#email    ${email}
-    Input Text    css=#confirmEmail    ${email}
+    ${email_address} =    Get Random Email Name
+    Input Text    css=#email    ${email_address}
+    Input Text    css=#confirmEmail    ${email_address}
     Input Text    css=#password    ${password}
     Input Text    css=#confirmPassword    ${password}
     Select From List By Label    css=div.row:nth-child(19) > div:nth-child(1) > div:nth-child(1) > select:nth-child(3)    Which is your favorite color?
     Input Text    css=#securityAnswer    ${sAnswer}
 
 User enters address
-    [Arguments]    ${companyName}    ${address}    ${city}    ${state}    ${zip}    ${phone}
+    [Arguments]    ${address}    ${city}    ${state}    ${zip}    ${phone}
+    ${companyName} =    Get Company Name
     Input Text    css=#companyName    ${companyName}
     Input Text    css=#address1    ${address}
     Input Text    css=#city    ${city}
@@ -49,4 +50,4 @@ User click 'Submit' button
 User clicks 'Not My Account' button
     Wait Until Element Is Visible    css=button.btn-default:nth-child(1)    20    No such element
     Click Element    css=button.btn-default:nth-child(1)
-    Sleep    3
+    Sleep    5
