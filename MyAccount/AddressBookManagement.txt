@@ -3,6 +3,7 @@ Suite Setup       Open Browser To Home Page
 Suite Teardown    Close All Browsers
 Test Setup        Navigate to Home Page
 Force Tags        Smoke
+Default Tags
 Resource          ../utils/AbstractContainer.txt
 
 *** Variables ***
@@ -19,7 +20,7 @@ Authenticated user can add new address to address book
     User navigates to 'Address Book' page
     User clicks 'Add new Address' button
     System displays 'Add/Edit Address' modal window
-    User enters address information    Adam    2700 Hospital Dr    Northport    AL - Alabama    354763360
+    User enters address information    2700 Hospital Dr    Northport    AL - Alabama    354763360
     User selects Limited access Address Location
     User selects require Delivery Appointment to Be Scheduled
     User clicks 'Save' button
@@ -32,7 +33,7 @@ Authenticated user can edit Address information
     User navigates to 'Address Book' page
     User clicks Edit button next to new added address
     System displays 'Add/Edit Address' modal window
-    User enters address information    Andrea    305 Intergraph Way    Madison    AL - Alabama    35758
+    User enters address information    305 Intergraph Way    Madison    AL - Alabama    35758
     User clicks 'Save' button
     User checks AVS validation
     System displays confirmation message    The address is successfully updated.
@@ -62,8 +63,9 @@ System displays 'Add/Edit Address' modal window
     Page Should Contain Element    css=#updateAddressForm
 
 User enters address information
-    [Arguments]    ${addressName}    ${address}    ${city}    ${state}    ${zip}
+    [Arguments]    ${address}    ${city}    ${state}    ${zip}
     Sleep    2
+    ${addressName} =    Get Random Address Name
     Input Text    css=#displayName    ${addressName}
     Input Text    css=#address1    ${address}
     Input Text    css=#city    ${city}

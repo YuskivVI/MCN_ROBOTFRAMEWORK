@@ -58,10 +58,10 @@ User enters address information
     Input Text    css=#postalCode    ${zip}
 
 User selects Limited access Address Location
-    Click Element    css=div.form-group:nth-child(17) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1)
+    Click Element    css=div.form-group:nth-child(18) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1)
 
 User selects require Delivery Appointment to Be Scheduled
-    Click Element    css=div.form-group:nth-child(18) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1)
+    Click Element    css=div.form-group:nth-child(19) > div:nth-child(1) > div:nth-child(2) > label:nth-child(1)
 
 User clicks 'Save' button
     Click Element    ${Save button}

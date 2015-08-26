@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20150819 09:12:53.697" generator="Robot 2.8.5 (Python 2.7.3 on win32)">
-<suite id="s1" name="Authentication &amp; CatalogNavigation">
-<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\Authentication" id="s1-s1" name="Authentication">
-<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\Authentication\CreateAnAccountPage.txt" id="s1-s1-s1" name="CreateAnAccountPage">
+<robot generated="20150825 10:25:25.273" generator="Robot 2.8.5 (Python 2.7.3 on win32)">
+<suite id="s1" name="MyAccount">
+<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\MyAccount" id="s1-s1" name="MyAccount">
+<suite source="C:\Users\Forte_Yuskiv_VI\Desktop\MCN_RF_Avtomation\MyAccount\AddressBookManagement.txt" id="s1-s1-s1" name="AddressBookManagement">
 <kw type="setup" name="AbstractContainer.Open Browser To Home Page">
 <doc></doc>
 <arguments>
@@ -13,4 +13,8 @@
 <arg>${Home}</arg>
 <arg>${BROWSER}</arg>
 </arguments>
-<msg timestamp="20150819 09:12:54.001" level="INFO">Opening browser 'Firefox' to base url 'http://stage.mcnichols.com'</msg>
+<msg timestamp="20150825 10:25:25.595" level="INFO">Opening browser 'firefox' to base url 'http://stage.mcnichols.com'</msg>
+<kw type="kw" name="Selenium2Library.Capture Page Screenshot">
+<doc>Takes a screenshot of the current page and embeds it into the log.</doc>
+<arguments>
+</arguments>

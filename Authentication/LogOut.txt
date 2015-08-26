@@ -5,6 +5,11 @@ Test Setup        Navigate to Login Page
 Force Tags        Smoke
 Resource          ../utils/AbstractContainer.txt
 
+*** Variables ***
+${Sign In button}    css=.form-inline > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)
+${Continue Shopping button}    css=.btn-space
+${Login/Register link}    css=.btn-group.welcome>a
+
 *** Test Cases ***
 Ability of end user to log out from the site
     Input Username    svenfisher888@gmail.com
@@ -26,9 +31,9 @@ User clicks 'Log out' link
     Wait invisiability of preloader
 
 System displays Sign in button and Continue shopping button
-    Wait Until Element Is Visible    css=a.btn-ar:nth-child(1)    30
-    Page Should Contain Element    css=a.btn-ar:nth-child(1)    There is no Sign in button
-    Page Should Contain Element    css=a.btn-ar:nth-child(2)    There is no 'Login/Register' link
+    Wait Until Element Is Visible    ${Sign In button}    30
+    Page Should Contain Element    ${Sign In button}    There is no Sign in button
+    Page Should Contain Element    ${Continue Shopping button}    There is no 'Continue Shopping' button
 
 System displays "Login/Register" link in site header
-    Element Should Contain    css=.btn-group.welcome>a    Login/Register    Login/Register link is not displayed
+    Element Should Contain    ${Login/Register link}    Login/Register    Login/Register link is not displayed

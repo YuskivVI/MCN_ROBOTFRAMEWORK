@@ -29,8 +29,8 @@ Authenticated user can add new credit card
     User clicks 'Credit Cards' link
     User clicks on 'New Card' button
     System displays 'Add/Edit Credit Card' modal window
-    User enters credit cards information field    Card    5555555555554444    Jan    2017    Sven    Svenny
-    ...    2700 Hospital Dr    Northport    AL - Alabama    354763360
+    User enters credit cards information field    5555555555554444    Jan    2017    Sven    Svenny    2700 Hospital Dr
+    ...    Northport    AL - Alabama    354763360
     User clicks 'Create' button
     System displays confirmation message
     System saves new credit card in database    Card
@@ -56,9 +56,10 @@ System displays 'Add/Edit Credit Card' modal window
     Page Should Contain Element    ${Create Button}
 
 User enters credit cards information field
-    [Arguments]    ${Name}    ${Number}    ${Month}    ${Year}    ${First}    ${Last}
-    ...    ${Address}    ${City}    ${State}    ${Zip}
+    [Arguments]    ${Number}    ${Month}    ${Year}    ${First}    ${Last}    ${Address}
+    ...    ${City}    ${State}    ${Zip}
     Sleep    2
+    ${Name}=    Get Random Credit Card Name
     Input Text    ${CC Name}    ${Name}
     Input Text    ${CC Number}    ${Number}
     Select From List By Label    ${CC Month}    ${Month}
