@@ -2,7 +2,6 @@
 Suite Setup       Open Browser To Home Page
 Suite Teardown    Close All Browsers
 Test Setup        Navigate to Login Page
-Force Tags        Smoke
 Test Template     Login With Invalid Credentials Should Fail
 Resource          ../utils/AbstractContainer.txt
 
