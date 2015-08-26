@@ -12,6 +12,7 @@ Verify that user can create new account without organization number
     User enters address    2700 Hospital Dr    Northport    AL - Alabama    354763360    5874624868
     User clicks on the 'Terms of Use' and 'Privacy Policy' checkbox
     User click 'Submit' button
+    User clicks 'Not My Account' button    
     Wait Until Element Is Visible    css=div.button-header > a:nth-child(1)    20
     Element Should Contain    css=div.button-header > a:nth-child(1)    My Account    User is not create new account
 
